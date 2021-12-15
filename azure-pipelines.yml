@@ -30,9 +30,6 @@ jobs:
   - ${{ if eq(variables['build.SourceBranchName'], 'master') }}:
     - group: sfdx-org-master
   steps:
-    - script: echo $(SalesforceUserName)
-    - script: echo $(InstanceUrl)
-    - script: echo $(Clientid)
     - task: UseNode@1
     - bash: 
         npm install sfdx-cli --global
@@ -44,8 +41,11 @@ jobs:
         sfdx force:source:convert -r ./force-app -d ./toDeploy
       displayName: Convert to deploy source
     - bash: 
-        sfdx force:source:deploy -c -p force-app/ -u $(SalesforceUserName)
-      displayName: Run Validation
+        sfdx force:mdapi:deploy -l RunLocalTests -c -d ./toDeploy -u prod -w 10
+      displayName: Run validation on source code
+    - bash: 
+        sfdx force:mdapi:deploy -l RunLocalTests -d ./toDeploy -u prod -w 10
+      displayName: Deploy source code to Production
     - bash:
         curl -u vismayaletters@gmail.com:88R580KBf7FZDVmvjmnn344D -X POST --data '{"transition":{"id":"31","looped":true}}' -H "Content-Type:application/json" https://vismayaletters.atlassian.net/rest/api/3/issue/VOR-3/transitions
       displayName: Change Status to Done

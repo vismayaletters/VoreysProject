@@ -7,7 +7,6 @@ trigger:
   batch: "true"
   branches:
     include:
-      - master
       - dev
   paths:
     exclude:
@@ -17,7 +16,6 @@ pr:
   autoCancel: "true"
   branches:
     include:
-      - master
       - dev
   paths:
     exclude:
@@ -27,8 +25,6 @@ jobs:
   variables:
   - ${{ if eq(variables['build.SourceBranchName'], 'dev') }}:
     - group: sfdx-org-dev
-  - ${{ if eq(variables['build.SourceBranchName'], 'master') }}:
-    - group: sfdx-org-master
   steps:
     - task: UseNode@1
     - bash: 

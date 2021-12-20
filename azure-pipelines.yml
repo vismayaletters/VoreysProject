@@ -39,6 +39,10 @@ jobs:
     - script: echo $(Clientid)
     - script: echo $(Build.SourceVersionMessage)
     - script: echo $(MyVar)
+    - script: 
+        curl -u vismayaletters@gmail.com:88R580KBf7FZDVmvjmnn344D -X PUT --data '{"update":{"comment":[{"add":{"body":{"type":"doc","version":1,"content":[{"type":"paragraph","content":[{"text":"Status Updated to Done","type":"text"}]}]}}} ]} }' -H "Content-Type:application/json" https://vismayaletters.atlassian.net/rest/api/3/issue/VOR-3
+        echo "Curl is running"
+      condition: startsWith(variables['Build.SourceVersionMessage'], 'EC3')
     - task: UseNode@1
     - bash: 
         npm install sfdx-cli --global
@@ -55,8 +59,5 @@ jobs:
     - bash: 
         sfdx force:mdapi:deploy -l RunLocalTests -d ./toDeploy -u prod -w 10
       displayName: Deploy source code to Production
-    - script: 
-        curl -u vismayaletters@gmail.com:88R580KBf7FZDVmvjmnn344D -X PUT --data '{"update":{"comment":[{"add":{"body":{"type":"doc","version":1,"content":[{"type":"paragraph","content":[{"text":"Status Updated to Done","type":"text"}]}]}}} ]} }' -H "Content-Type:application/json" https://vismayaletters.atlassian.net/rest/api/3/issue/VOR-3
-        echo "Curl is running"
-      condition: startsWith(variables['Build.SourceVersionMessage'], 'EC3')
+
 

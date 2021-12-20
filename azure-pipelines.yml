@@ -29,12 +29,14 @@ jobs:
     - group: sfdx-org-dev
   - ${{ if eq(variables['build.SourceBranchName'], 'master') }}:
     - group: sfdx-org-master
+  - name: ticket
+    value: substr("EC3-001",3)
   steps:
     - script: echo $(SalesforceUserName)
     - script: echo $(InstanceUrl)
     - script: echo $(Clientid)
     - script: echo $(Build.SourceVersionMessage)
-    - script: echo substr("EC3-001",3)
+    - script: echo $(ticket)
     - task: UseNode@1
     - bash: 
         npm install sfdx-cli --global

@@ -39,7 +39,7 @@ jobs:
     - script: echo $(Clientid)
     - script: echo $(Build.SourceVersionMessage)
     - script: echo $(MyVar)
-    - script: echo "commit starts with EC3" 
+    - script: echo "commit start with EC3" 
       condition: startsWith(variables['Build.SourceVersionMessage'], 'EC3')
 
 

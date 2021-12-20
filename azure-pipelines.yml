@@ -28,11 +28,11 @@ jobs:
   - ${{ if eq(variables['build.SourceBranchName'], 'dev') }}:
     - group: sfdx-org-dev
     - name: MyVar
-      value:  (`"$(Build.SourceVersionMessage)" | head -c 3`)
+      value:  '`echo "$(Build.SourceVersionMessage)" | head -c 3`'
   - ${{ if eq(variables['build.SourceBranchName'], 'master') }}:
     - group: sfdx-org-master
     - name: MyVar
-      value:  (`"$(Build.SourceVersionMessage)" | head -c 3`)
+      value:  '`echo "$(Build.SourceVersionMessage)" | head -c 3`'
   steps:
     - script: echo $(SalesforceUserName)
     - script: echo $(InstanceUrl)

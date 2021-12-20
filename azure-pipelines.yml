@@ -29,14 +29,17 @@ jobs:
     - group: sfdx-org-dev
   - ${{ if eq(variables['build.SourceBranchName'], 'master') }}:
     - group: sfdx-org-master
-  - name: ticket
-    value: substr('EC3-001',3)
   steps:
     - script: echo $(SalesforceUserName)
     - script: echo $(InstanceUrl)
     - script: echo $(Clientid)
     - script: echo $(Build.SourceVersionMessage)
-    - script: echo $(ticket)
+    - task: CmdLine@2
+      inputs:
+        script: ' x=`echo "$(Build.SourceVersionMessage)" | head -c 3`; echo "##vso[task.setvariable variable=MyVar]$x"'
+    - task: CmdLine@2
+      inputs:
+        script: 'echo "$(MyVar)"'
     - task: UseNode@1
     - bash: 
         npm install sfdx-cli --global

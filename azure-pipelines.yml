@@ -30,7 +30,7 @@ jobs:
   - ${{ if eq(variables['build.SourceBranchName'], 'master') }}:
     - group: sfdx-org-master
   - name: ticket
-    value: substr("EC3-001",3)
+    value: substr('EC3-001',3)
   steps:
     - script: echo $(SalesforceUserName)
     - script: echo $(InstanceUrl)

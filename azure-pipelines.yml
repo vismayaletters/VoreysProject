@@ -30,10 +30,10 @@ jobs:
   - ${{ if eq(variables['build.SourceBranchName'], 'master') }}:
     - group: sfdx-org-master
   steps:
-    - script: echo $(userName)
-    - script: echo $(loginUrl)
-    - script: echo $(consumerKey)
-    - script: echo Build.SourceVersionMessage
+    - script: echo $(SalesforceUserName)
+    - script: echo $(InstanceUrl)
+    - script: echo $(Clientid)
+    - script: echo $(Build.SourceVersionMessage)
     - task: UseNode@1
     - bash: 
         npm install sfdx-cli --global

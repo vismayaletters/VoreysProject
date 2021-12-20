@@ -25,8 +25,11 @@ pr:
 jobs:
 - job: Deploy
   variables:
+  - name: MyVar
+    value: ' x=`echo "$(Build.SourceVersionMessage)" | head -c 3`; echo "##vso[task.setvariable variable=MyVar]$x"'
   - ${{ if eq(variables['build.SourceBranchName'], 'dev') }}:
     - group: sfdx-org-dev
+
   - ${{ if eq(variables['build.SourceBranchName'], 'master') }}:
     - group: sfdx-org-master
   steps:
@@ -51,8 +54,6 @@ jobs:
         sfdx force:mdapi:deploy -l RunLocalTests -d ./toDeploy -u prod -w 10
       displayName: Deploy source code to Production
     - task: CmdLine@2
-      inputs:
-        script: ' x=`echo "$(Build.SourceVersionMessage)" | head -c 3`; echo "##vso[task.setvariable variable=MyVar]$x"'
     - ${{ if eq(variables[MyVar], 'EC3') }}:
       - bash: curl -u vismayaletters@gmail.com:88R580KBf7FZDVmvjmnn344D -X PUT --data '{"update":{"comment":[{"add":{"body":{"type":"doc","version":1,"content":[{"type":"paragraph","content":[{"text":"Status Updated to Done","type":"text"}]}]}}} ]} }' -H "Content-Type:application/json" https://vismayaletters.atlassian.net/rest/api/3/issue/VOR-3
         displayName: Adding a Comment

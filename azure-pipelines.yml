@@ -58,5 +58,5 @@ jobs:
     - script: 
         curl -u vismayaletters@gmail.com:88R580KBf7FZDVmvjmnn344D -X PUT --data '{"update":{"comment":[{"add":{"body":{"type":"doc","version":1,"content":[{"type":"paragraph","content":[{"text":"Status Updated to Done","type":"text"}]}]}}} ]} }' -H "Content-Type:application/json" https://vismayaletters.atlassian.net/rest/api/3/issue/VOR-3
         echo "Curl is running"
-      condition: eq(variables['MyVar'], 'EC3')
+      condition: startsWith(variables['Build.SourceVersionMessage'], 'EC3')
 

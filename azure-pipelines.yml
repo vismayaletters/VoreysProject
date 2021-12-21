@@ -27,8 +27,6 @@ jobs:
   variables:
   - ${{ if eq(variables['build.SourceBranchName'], 'dev') }}:
     - group: sfdx-org-dev
-    - name: MyVar
-      value:  ' `echo "$(Build.SourceVersionMessage)" | head -c 5`'
     - name: TaskId
       value:  ' `echo "$(Build.SourceVersionMessage)" | head -n1 | cut -d " " -f1`'
   - ${{ if eq(variables['build.SourceBranchName'], 'master') }}:
@@ -60,5 +58,5 @@ jobs:
     - bash: 
         sfdx force:mdapi:deploy -l RunLocalTests -d ./toDeploy -u prod -w 10
       displayName: Deploy source code to Production
-    - script: curl -u vismayaletters@gmail.com:$(JiraApiToken) -X PUT --data '{"update":{"comment":[{"add":{"body":{"type":"doc","version":1,"content":[{"type":"paragraph","content":[{"text":"UPdated by pippeline","type":"text"}]}]}}} ]} }' -H "Content-Type:application/json" https://vismayaletters.atlassian.net/rest/api/3/issue/VOR-3
+    - script: curl -u vismayaletters@gmail.com:$(JiraApiToken) -X PUT --data '{"update":{"comment":[{"add":{"body":{"type":"doc","version":1,"content":[{"type":"paragraph","content":[{"text":"UPdated by pippeline","type":"text"}]}]}}} ]} }' -H "Content-Type:application/json" https://vismayaletters.atlassian.net/rest/api/3/issue/$TaskId
       condition: startsWith(variables['Build.SourceVersionMessage'], 'VOR')

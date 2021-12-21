@@ -57,7 +57,7 @@ jobs:
       displayName: "Checking the new value of TaskId"
     - task: UseNode@1
     - bash: 
-    - script: curl -u vismayaletters@gmail.com:$(JiraApiToken) -X PUT --data '{"body":"$(Build.SourceVersionMessage)"}' -H "Content-Type:application/json" https://vismayaletters.atlassian.net/rest/api/3/issue/TaskId/comment
+    - script: curl -u vismayaletters@gmail.com:$(JiraApiToken) -X PUT --data '{"body":"$(Build.SourceVersionMessage)"}' -H "Content-Type:application/json" https://vismayaletters.atlassian.net/rest/api/3/issue/$TaskId/comment
       condition: startsWith(variables['Build.SourceVersionMessage'], 'VOR')
       displayName: "Updating Jira Issue"
       

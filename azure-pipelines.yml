@@ -48,4 +48,4 @@ jobs:
     - bash: |
         echo "##vso[task.setvariable variable=firstWord]$(`echo "$(Build.SourceVersionMessage)" | head -n1 | cut -d " " -f1`)"
     - bash: |
-        echo $(firstWord)
+        script: echo $(firstWord)

@@ -44,9 +44,9 @@ jobs:
     - script: echo $(Build.SourceVersionMessage)
     - script: echo $(MyVar)
     - script: echo $(TaskId)
+    - script: echo "##vso[task.setvariable variable=firstWord]$`echo "$(Build.SourceVersionMessage)" | head -n1 | cut -d " " -f1`"
     - task: UseNode@1
     - bash: 
         echo "##vso[task.setvariable variable=firstWord]$`echo "$(Build.SourceVersionMessage)" | head -n1 | cut -d " " -f1`"
     - bash: 
-        echo "##vso[task.setvariable variable=firstWord]$`echo "$(Build.SourceVersionMessage)" | head -n1 | cut -d " " -f1`"
         echo $(firstWord)

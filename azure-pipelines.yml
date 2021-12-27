@@ -27,37 +27,26 @@ jobs:
   variables:
   - ${{ if eq(variables['build.SourceBranchName'], 'dev') }}:
     - group: sfdx-org-dev
-    - name: TaskId
-      value:  ' `echo "$(Build.SourceVersionMessage)" | head -n1 | cut -d " " -f1`'
   - ${{ if eq(variables['build.SourceBranchName'], 'master') }}:
     - group: sfdx-org-master
-    - name: MyVar
-      value:  ' `echo "$(Build.SourceVersionMessage)" | head -c 5`'
-    - name: TaskId
-      value:  " "
   steps:
     - script: echo $(SalesforceUserName)
     - script: echo $(InstanceUrl)
     - script: echo $(Clientid)
     - script: echo $(Build.SourceVersionMessage)
-    - script: echo $(MyVar)
-    - script: echo $(TaskId)
-    - task: Bash@3
-      inputs:
-            targetType: 'inline'
-            script: |
-                firstWord=' `echo "$(Build.SourceVersionMessage)" | head -n1 | cut -d " " -f1`'
-                echo "##vso[task.setvariable variable=TaskId]$firstWord"
-      displayName: "Assigning firstWord to TaskId"
-    - task: Bash@3
-      inputs:
-            targetType: 'inline'
-            script: |
-                echo $(TaskId)
-      displayName: "Checking the new value of TaskId"
     - task: UseNode@1
     - bash: 
-    - script: curl -u vismayaletters@gmail.com:$(JiraApiToken) -X PUT --data '{"body":"$(Build.SourceVersionMessage)"}' -H "Content-Type:application/json" https://vismayaletters.atlassian.net/rest/api/3/issue/$variables['TaskId']
-      condition: startsWith(variables['Build.SourceVersionMessage'], 'VOR')
-      displayName: "Updating Jira Issue"
-      
+        npm install sfdx-cli --global
+      displayName: Install Salesforce CLI
+    - bash: 
+        sfdx force:auth:jwt:grant --clientid $(Clientid) --jwtkeyfile ./buildfiles/server.key --username $(SalesforceUserName) --instanceurl $(InstanceUrl) -a prod
+      displayName: Authorize salesforce org
+    - bash: 
+        sfdx force:source:convert -r ./force-app -d ./toDeploy
+      displayName: Convert to deploy source
+    - bash: 
+        sfdx force:mdapi:deploy -l RunLocalTests -c -d ./toDeploy -u prod -w 10
+      displayName: Run validation on source code
+    - bash: 
+        sfdx force:mdapi:deploy -l RunLocalTests -d ./toDeploy -u prod -w 10
+      displayName: Deploy source code to Production

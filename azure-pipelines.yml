@@ -13,15 +13,6 @@ trigger:
     exclude:
       - README.md
       - azure-pipelines.yml
-pr:
-  autoCancel: "true"
-  branches:
-    include:
-      - master
-      - dev
-  paths:
-    exclude:
-      - README.md
 jobs:
 - job: Deploy
   variables:

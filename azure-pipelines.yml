@@ -27,24 +27,17 @@ jobs:
   variables:
   - ${{ if eq(variables['build.SourceBranchName'], 'dev') }}:
     - group: sfdx-org-dev
-    - name: MyVar
-      value:  ' `echo "$(Build.SourceVersionMessage)" | head -c 5`'
-    - name: TaskId
-      value:  ' `echo "$(Build.SourceVersionMessage)" | head -n1 | cut -d " " -f1`'
   - ${{ if eq(variables['build.SourceBranchName'], 'master') }}:
     - group: sfdx-org-master
-    - name: MyVar
-      value:  ' `echo "$(Build.SourceVersionMessage)" | head -c 5`'
-    - name: TaskId
-      value:  ' `echo "$(Build.SourceVersionMessage)" | head -n1 | cut -d " " -f1`'
   steps:
     - script: echo $(SalesforceUserName)
     - script: echo $(InstanceUrl)
     - script: echo $(Clientid)
     - script: echo $(Build.SourceVersionMessage)
-    - script: echo $(MyVar)
-    - script: echo $(TaskId)
     - task: UseNode@1
+      displayName: 'Use Node.js 16.13.2'
+      inputs:
+        version: '16.13.2'
     - bash: 
         npm install sfdx-cli --global
       displayName: Install Salesforce CLI
@@ -60,5 +53,3 @@ jobs:
     - bash: 
         sfdx force:mdapi:deploy -l RunLocalTests -d ./toDeploy -u prod -w 10
       displayName: Deploy source code to Production
-    - script: curl -u vismayaletters@gmail.com:$(JiraApiToken) -X PUT --data '{"update":{"comment":[{"add":{"body":{"type":"doc","version":1,"content":[{"type":"paragraph","content":[{"text":$(Build.SourceVersionMessage),"type":"text"}]}]}}} ]} }' -H "Content-Type:application/json" https://vismayaletters.atlassian.net/rest/api/3/issue/
-      condition: startsWith(variables['Build.SourceVersionMessage'], 'VOR')

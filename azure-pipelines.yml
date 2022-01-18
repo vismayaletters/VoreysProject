@@ -21,10 +21,6 @@ jobs:
   - ${{ if eq(variables['build.SourceBranchName'], 'master') }}:
     - group: sfdx-org-master
   steps:
-    - script: echo $(SalesforceUserName)
-    - script: echo $(InstanceUrl)
-    - script: echo $(Clientid)
-    - script: echo $(Build.SourceVersionMessage)
     - task: UseNode@1
       displayName: 'Use Node.js 16.13.2'
       inputs:

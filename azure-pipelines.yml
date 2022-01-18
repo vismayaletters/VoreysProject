@@ -26,6 +26,9 @@ jobs:
     - script: echo $(Clientid)
     - script: echo $(Build.SourceVersionMessage)
     - task: UseNode@1
+      displayName: 'Use Node.js 16.13.2'
+      inputs:
+        version: '16.13.2'
     - bash: 
         npm install sfdx-cli --global
       displayName: Install Salesforce CLI
